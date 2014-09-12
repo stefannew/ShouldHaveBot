@@ -16,7 +16,7 @@ import time
 from dev import *
 
 user_agent = ("Should Have Bot 1.0")
-r = praw.Reddit(user_agent=user_agent)
+r = praw.Reddit(user_agent = user_agent)
 r.login('ShouldHaveBot', USER_PASSWORD)
 
 already_checked = []

@@ -27,7 +27,7 @@ while True:
 	for comment in all_comments:
 		if comment.id not in already_checked:
 			if "should of" in comment.body.lower():
-				comment.reply("I think you meant *should have*.\n\nBuilt with [PRAW](https://praw.readthedocs.org/en/v2.1.16/)")
+				comment.reply("I think you meant *should have*.")
 				print "[" + datetime.datetime.now().strftime("%I:%M%p") + "] Replied to comment " + comment.id
 			already_checked.append(comment.id)
 	time.sleep(60)

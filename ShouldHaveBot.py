@@ -25,7 +25,7 @@ class ShouldHaveBot(object):
         self.interval = interval
 
     def log(self, date, time, cid):
-        string = '[' date + ' ' + time + ']' + ' - Replied to comment ' + cid
+        string = '[' + date + ' ' + time + ']' + ' - Replied to comment ' + cid
 
         with open('log.txt', 'a+') as f:
             f.write(string)

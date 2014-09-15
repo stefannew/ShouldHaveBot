@@ -24,8 +24,8 @@ class ShouldHaveBot(object):
         self.instance = praw.Reddit(user_agent=user_agent)
         self.interval = interval
 
-    def log(self, date, time, cid):
-        string = '[' + date + ' ' + time + ']' + ' - Replied to comment ' + cid
+    def log(self, date, now, cid):
+        string = '[' + date + ' ' + now + ']' + ' - Replied to comment ' + cid
 
         with open('log.txt', 'a+') as f:
             f.write(string)
@@ -42,13 +42,13 @@ class ShouldHaveBot(object):
             regex = ur'\bshould of\b'
 
             date = time.strftime('%d/%m/%Y')
-            time = datetime.datetime.now().strftime('%I:%M%p')
+            now = datetime.datetime.now().strftime('%I:%M%p')
 
             for comment in all_comments:
                 if comment.id not in already_checked:
                     if re.search(regex, comment.body.lower()):
                         comment.reply('I think you meant *should have*.')
-                        self.log(date, time, comment.id)
+                        self.log(date, now, comment.id)
                     already_checked.append(comment.id)
 
             time.sleep(self.interval)

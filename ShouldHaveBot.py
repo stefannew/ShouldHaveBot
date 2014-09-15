@@ -26,9 +26,6 @@ class ShouldHaveBot(object):
 
     def log(self, date, now, cid):
         string = '[' + date + ' ' + now + ']' + ' - Replied to comment ' + cid
-
-        with open('log.txt', 'a+') as f:
-            f.write(string + '\n')
         print(string)
 
     def login(self):

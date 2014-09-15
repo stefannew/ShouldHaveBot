@@ -3,31 +3,52 @@
 """
 ShouldHaveBot
 
-@author:	Stefan New - http://www.stefannew.com
-@date:		September 11th, 2014
-@version:	1.0
+@author:    Stefan New - http://www.stefannew.com
+@date:      September 14th, 2014
+@version:   1.1
 
 """
 
 import datetime
 import praw
 import time
+import re
 
-from dev import *
+from settings import *
 
-user_agent = ("Should Have Bot 1.0")
-r = praw.Reddit(user_agent = user_agent)
-r.login('ShouldHaveBot', USER_PASSWORD)
 
-already_checked = []
+class ShouldHaveBot(object):
+    def __init__(self, username, password, user_agent, interval):
+        self.username = username
+        self.password = password
+        self.instance = praw.Reddit(user_agent=user_agent)
+        self.interval = interval
 
-while True:
-	all_comments = r.get_comments('all')
+    def log(self, time, cid):
+        with open('log.txt', 'w') as f:
+            f.write('[' + time + ']' + ' - Replied to comment ' + cid)
+        print(string)
 
-	for comment in all_comments:
-		if comment.id not in already_checked:
-			if "should of" in comment.body.lower():
-				comment.reply("I think you meant *should have*.")
-				print "[" + datetime.datetime.now().strftime("%I:%M%p") + "] Replied to comment " + comment.id
-			already_checked.append(comment.id)
-	time.sleep(60)
+    def login(self):
+        self.instance.login(self.username, self.password)
+
+    def run(self):
+        already_checked = []
+
+        while True:
+            all_comments = self.instance.get_comments('all')
+            regex = ur'\bshould of\b'
+            now = datetime.datetime.now().strftime("%I:%M%p")
+
+            for comment in all_comments:
+                if comment.id not in already_checked:
+                    if re.search(regex, comment.body.lower()):
+                        comment.reply("I think you meant *should have*.")
+                        self.log(now, comment.id)
+                    already_checked.append(comment.id)
+
+            time.sleep(self.interval)
+
+bot = ShouldHaveBot('ShouldHaveBot', PASSWORD, "ShouldHaveBot 1.1", 60)
+bot.login()
+bot.run()
